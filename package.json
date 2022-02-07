@@ -2,7 +2,7 @@
   "name": "command-store",
   "displayName": "Command Store",
   "description": "Command line store sidebar for Visual studio code",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/ardisaurus/command-store"
