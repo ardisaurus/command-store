@@ -1,6 +1,6 @@
 # Command Store
 
-![Demo](https://github.com/ardisaurus/command-store/tree/main/resources/demo.gif)
+![demo](https://user-images.githubusercontent.com/24281652/152735693-c943bccd-6345-4e07-b78e-380410e28b22.gif)
 
 A visual studio code extension where you can store your command lines and run them from sidebar
 
