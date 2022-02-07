@@ -1,0 +1,131 @@
+{
+  "name": "command-store",
+  "displayName": "Command Store",
+  "description": "Command line store sidebar for Visual studio code",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ardisaurus/command-store"
+  },
+  "bugs": {
+    "url": "https://github.com/ardisaurus/command-store/issues"
+  },
+  "homepage": "https://github.com/ardisaurus/command-store",
+  "keywords": [
+    "command line",
+    "save",
+    "storage",
+    "CLI",
+    "cli"
+  ],
+  "publisher": "ardisaurus",
+  "license": "OSL-3.0",
+  "engines": {
+    "vscode": "^1.50.0"
+  },
+  "icon": "resources/icon.png",
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onView:commandStoreTreeView"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "commandStoreTreeView.selectNode",
+        "title": "Execute command",
+        "icon": {
+          "light": "resources/light/play.svg",
+          "dark": "resources/dark/play.svg"
+        }
+      },
+      {
+        "command": "commandStoreTreeView.viewNode",
+        "title": "View command",
+        "icon": {
+          "light": "resources/light/eye.svg",
+          "dark": "resources/dark/eye.svg"
+        }
+      },
+      {
+        "command": "commandStoreTreeView.removeNode",
+        "title": "Remove command item",
+        "icon": {
+          "light": "resources/light/trash.svg",
+          "dark": "resources/dark/trash.svg"
+        }
+      },
+      {
+        "command": "command-store.addCommandItem",
+        "title": "Add command item",
+        "icon": {
+          "light": "resources/light/add.svg",
+          "dark": "resources/dark/add.svg"
+        }
+      }
+    ],
+    "views": {
+      "debug": [
+        {
+          "id": "commandStoreTreeView",
+          "name": "Command Store"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "command-store.addCommandItem",
+          "group": "navigation",
+          "when": "view == commandStoreTreeView"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "commandStoreTreeView.selectNode",
+          "when": "viewItem == commandItem",
+          "group": "inline"
+        },
+        {
+          "command": "commandStoreTreeView.viewNode",
+          "when": "viewItem == commandItem",
+          "group": "inline"
+        },
+        {
+          "command": "commandStoreTreeView.removeNode",
+          "when": "viewItem == commandItem",
+          "group": "inline"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run compile",
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "watch": "tsc -watch -p ./",
+    "pretest": "yarn run compile && yarn run lint",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.3",
+    "@types/lowdb": "^1.0.11",
+    "@types/mocha": "^8.0.0",
+    "@types/node": "^12.11.7",
+    "@types/uuid": "^8.3.4",
+    "@types/vscode": "^1.50.0",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
+    "eslint": "^7.9.0",
+    "glob": "^7.1.6",
+    "mocha": "^8.1.3",
+    "typescript": "^4.0.2",
+    "vscode-test": "^1.4.0"
+  },
+  "dependencies": {
+    "lowdb": "1.0.0",
+    "uuid": "^8.3.2"
+  }
+}
