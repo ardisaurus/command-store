@@ -14,7 +14,7 @@ Initial release
 
 Add configurable save location for command-lines config
 
-1. Go to File>Preference>Setting or Ctrl + ,
+1. Go to File>Preference>Setting or `Ctrl + ,`
 2. Go to Extensions>Command Store>Config Saving Location
 ![demo-setting](https://github.com/ardisaurus/command-store/assets/24281652/9e9c06a2-e299-4be2-8e91-a139adc53483)
 
