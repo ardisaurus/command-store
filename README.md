@@ -15,6 +15,7 @@ Initial release
 Add config
 File>Preference>Setting or Ctrl+,
 Extensions>Command Store>Config Saving Location
+![demo-setting](https://github.com/ardisaurus/command-store/assets/24281652/9e9c06a2-e299-4be2-8e91-a139adc53483)
 
 - root
 - workspace
