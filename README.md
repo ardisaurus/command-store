@@ -9,3 +9,13 @@ A visual studio code extension where you can store your command lines and run th
 ### 1.0.0
 
 Initial release
+
+### 1.1.0
+
+Add config
+File>Preference>Setting or Ctrl+,
+Extensions>Command Store>Config Saving Location
+
+- root
+- workspace
+- application

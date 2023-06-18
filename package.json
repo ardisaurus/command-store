@@ -2,7 +2,7 @@
   "name": "command-store",
   "displayName": "Command Store",
   "description": "Command line store sidebar for Visual studio code",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/ardisaurus/command-store"
@@ -99,6 +99,36 @@
           "group": "inline"
         }
       ]
+    },
+    "configuration": {
+      "title": "Command Store",
+      "properties": {
+        "commandStore.configSavingLocation": {
+          "type": "string",
+          "default": "root",
+          "enum": [
+            "root",
+            "workspace",
+            "application"
+          ],
+          "enumDescriptions": [
+            "Save config in your root project folder.",
+            "Save config as workspace setting inside your .vscode folder.",
+            "Save config as user setting, to use across diferent projects"
+          ],
+          "description": "Save config file in .vscode folder instead root folder."
+        },
+        "commandStore.list": {
+          "type": "array",
+          "default": [],
+          "description": "Commands stored in workspace setting inside .vscode project folder."
+        },
+        "workbench.commandStore.list": {
+          "type": "array",
+          "default": [],
+          "description": "Commands stored in user setting."
+        }
+      }
     }
   },
   "scripts": {

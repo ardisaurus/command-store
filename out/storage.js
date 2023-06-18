@@ -16,12 +16,41 @@ const path_1 = require("path");
 class StorageClass {
     constructor() {
         this.commandList = null;
+        this.saveLocation = "root";
+    }
+    getmConfig() {
+        var _a;
+        const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
+        if (this.saveLocation === "workspace" && (currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri)) {
+            return vscode.workspace.getConfiguration("", currentDocument.uri);
+        }
+        else {
+            return vscode.workspace.getConfiguration("workbench");
+        }
     }
     reloadConfiguration() {
-        this.commandList = utils_1.jsonInstance("commandStore.vscode.json");
+        const configuration = vscode.workspace.getConfiguration();
+        const configSavingLocation = configuration.get("commandStore.configSavingLocation");
+        this.saveLocation = configSavingLocation || "root";
+        if (this.saveLocation === "root") {
+            this.commandList = utils_1.jsonInstance("commandStore.vscode.json");
+        }
+        else {
+            const mConfiguration = this.getmConfig();
+            this.commandList = mConfiguration.get("commandStore.list");
+        }
     }
     ensureStorageExist() {
-        const isExist = utils_1.doesExists([path_1.join("commandStore.vscode.json")]);
+        let isExist = false;
+        if (this.saveLocation === "root") {
+            isExist = utils_1.doesExists([path_1.join("commandStore.vscode.json")]);
+        }
+        else {
+            const mConfiguration = this.getmConfig();
+            if (mConfiguration.get("commandStore.list")) {
+                isExist = true;
+            }
+        }
         if (!isExist) {
             this.commandList = null;
             return false;
@@ -37,14 +66,34 @@ class StorageClass {
             if (this.ensureStorageExist() === false) {
                 return [];
             }
-            const commands = this.commandList.db.get("commands").value() || [];
+            let commands = [];
+            if (this.saveLocation === "root") {
+                commands = this.commandList.db.get("commands").value() || [];
+            }
+            else {
+                const mConfiguration = this.getmConfig();
+                commands = mConfiguration.get("commandStore.list") || [];
+            }
             return commands;
         });
     }
     setCommmand(value) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                this.commandList.db.set("commands", value).write();
+                if (this.saveLocation === "root") {
+                    this.commandList.db.set("commands", value).write();
+                }
+                else {
+                    const mConfiguration = this.getmConfig();
+                    const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
+                    if (this.saveLocation === "workspace" && (currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri)) {
+                        yield mConfiguration.update("commandStore.list", value, vscode.ConfigurationTarget.Workspace);
+                    }
+                    else {
+                        yield mConfiguration.update("commandStore.list", value, vscode.ConfigurationTarget.Global);
+                    }
+                }
                 return value;
             }
             catch (error) {
