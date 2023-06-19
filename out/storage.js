@@ -24,9 +24,7 @@ class StorageClass {
         if (this.saveLocation === "workspace" && (currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri)) {
             return vscode.workspace.getConfiguration("", currentDocument.uri);
         }
-        else {
-            return vscode.workspace.getConfiguration("workbench");
-        }
+        return vscode.workspace.getConfiguration("workbench");
     }
     reloadConfiguration() {
         const configuration = vscode.workspace.getConfiguration();
@@ -61,6 +59,7 @@ class StorageClass {
         return true;
     }
     getCommmand() {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             this.reloadConfiguration();
             if (this.ensureStorageExist() === false) {
@@ -71,8 +70,15 @@ class StorageClass {
                 commands = this.commandList.db.get("commands").value() || [];
             }
             else {
-                const mConfiguration = this.getmConfig();
-                commands = mConfiguration.get("commandStore.list") || [];
+                const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
+                if (this.saveLocation === "workspace" && !(currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri)) {
+                    commands = [];
+                    vscode.window.showErrorMessage("Open a file inside your project folder.");
+                }
+                else {
+                    const mConfiguration = this.getmConfig();
+                    commands = mConfiguration.get("commandStore.list") || [];
+                }
             }
             return commands;
         });
@@ -86,9 +92,14 @@ class StorageClass {
                 }
                 else {
                     const mConfiguration = this.getmConfig();
-                    const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
-                    if (this.saveLocation === "workspace" && (currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri)) {
-                        yield mConfiguration.update("commandStore.list", value, vscode.ConfigurationTarget.Workspace);
+                    if (this.saveLocation === "workspace") {
+                        const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
+                        if (currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri) {
+                            yield mConfiguration.update("commandStore.list", value, vscode.ConfigurationTarget.Workspace);
+                        }
+                        else {
+                            vscode.window.showErrorMessage("Open a file inside your project folder.");
+                        }
                     }
                     else {
                         yield mConfiguration.update("commandStore.list", value, vscode.ConfigurationTarget.Global);

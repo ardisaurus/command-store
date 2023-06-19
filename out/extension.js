@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deactivate = exports.activate = void 0;
 const vscode = require("vscode");
 const treeView_1 = require("./treeView");
+const storage_1 = require("./storage");
 function activate(context) {
     return __awaiter(this, void 0, void 0, function* () {
         const treeView = new treeView_1.TreeView(context);
@@ -30,7 +31,11 @@ function activate(context) {
                 }
             }
         }));
+        let refreshCommandList = vscode.commands.registerCommand("command-store.refreshCommandList", () => __awaiter(this, void 0, void 0, function* () {
+            yield storage_1.storageExplorer.getCommmand();
+        }));
         context.subscriptions.push(addCommand);
+        context.subscriptions.push(refreshCommandList);
     });
 }
 exports.activate = activate;
