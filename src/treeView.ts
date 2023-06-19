@@ -49,10 +49,12 @@ export class TreeView {
   public async addNode({ name, commandLine }: any): Promise<any> {
     const id = uuidv4();
     const newList = [...this._cmdList, { id, name, commandLine }];
-    await storageExplorer.setCommmand(newList);
-    this._cmdList = newList;
-    this._tdp.addItem({ name, id, commandLine });
-    vscode.window.showInformationMessage(`${name} has been added`);
+    const isAdded = await storageExplorer.setCommmand(newList);
+    if (isAdded) {
+      this._cmdList = newList;
+      this._tdp.addItem({ name, id, commandLine });
+      vscode.window.showInformationMessage(`${name} has been added`);
+    }
   }
 
   async removeNode(item: TreeItem) {
