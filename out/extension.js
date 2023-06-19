@@ -32,7 +32,17 @@ function activate(context) {
             }
         }));
         let refreshCommandList = vscode.commands.registerCommand("command-store.refreshCommandList", () => __awaiter(this, void 0, void 0, function* () {
-            yield storage_1.storageExplorer.getCommmand();
+            var _a;
+            const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
+            const saveLocation = vscode.workspace
+                .getConfiguration()
+                .get("commandStore.configSavingLocation");
+            if (saveLocation === "workspace" && !(currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri)) {
+                vscode.window.showErrorMessage("Open a file inside your project folder.");
+            }
+            else {
+                yield storage_1.storageExplorer.getCommmand();
+            }
         }));
         context.subscriptions.push(addCommand);
         context.subscriptions.push(refreshCommandList);

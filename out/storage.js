@@ -73,7 +73,6 @@ class StorageClass {
                 const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
                 if (this.saveLocation === "workspace" && !(currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri)) {
                     commands = [];
-                    vscode.window.showErrorMessage("Open a file inside your project folder.");
                 }
                 else {
                     const mConfiguration = this.getmConfig();
@@ -89,6 +88,7 @@ class StorageClass {
             try {
                 if (this.saveLocation === "root") {
                     this.commandList.db.set("commands", value).write();
+                    return true;
                 }
                 else {
                     const mConfiguration = this.getmConfig();
@@ -96,16 +96,18 @@ class StorageClass {
                         const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
                         if (currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri) {
                             yield mConfiguration.update("commandStore.list", value, vscode.ConfigurationTarget.Workspace);
+                            return true;
                         }
                         else {
                             vscode.window.showErrorMessage("Open a file inside your project folder.");
+                            return false;
                         }
                     }
                     else {
                         yield mConfiguration.update("commandStore.list", value, vscode.ConfigurationTarget.Global);
+                        return true;
                     }
                 }
-                return value;
             }
             catch (error) {
                 vscode.window.showErrorMessage(error.message);

@@ -42,10 +42,12 @@ class TreeView {
         return __awaiter(this, void 0, void 0, function* () {
             const id = uuid_1.v4();
             const newList = [...this._cmdList, { id, name, commandLine }];
-            yield storage_1.storageExplorer.setCommmand(newList);
-            this._cmdList = newList;
-            this._tdp.addItem({ name, id, commandLine });
-            vscode.window.showInformationMessage(`${name} has been added`);
+            const isAdded = yield storage_1.storageExplorer.setCommmand(newList);
+            if (isAdded) {
+                this._cmdList = newList;
+                this._tdp.addItem({ name, id, commandLine });
+                vscode.window.showInformationMessage(`${name} has been added`);
+            }
         });
     }
     removeNode(item) {

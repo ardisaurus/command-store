@@ -65,9 +65,6 @@ class StorageClass {
       const currentDocument = vscode.window.activeTextEditor?.document;
       if (this.saveLocation === "workspace" && !currentDocument?.uri) {
         commands = [];
-        vscode.window.showErrorMessage(
-          "Open a file inside your project folder."
-        );
       } else {
         const mConfiguration = this.getmConfig();
         commands = mConfiguration.get<Command[]>("commandStore.list") || [];
@@ -80,6 +77,7 @@ class StorageClass {
     try {
       if (this.saveLocation === "root") {
         this.commandList.db.set("commands", value).write();
+        return true;
       } else {
         const mConfiguration = this.getmConfig();
         if (this.saveLocation === "workspace") {
@@ -90,10 +88,12 @@ class StorageClass {
               value,
               vscode.ConfigurationTarget.Workspace
             );
+            return true;
           } else {
             vscode.window.showErrorMessage(
               "Open a file inside your project folder."
             );
+            return false;
           }
         } else {
           await mConfiguration.update(
@@ -101,10 +101,9 @@ class StorageClass {
             value,
             vscode.ConfigurationTarget.Global
           );
+          return true;
         }
       }
-
-      return value;
     } catch (error: any) {
       vscode.window.showErrorMessage(error.message);
       console.error(error);
