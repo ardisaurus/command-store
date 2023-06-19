@@ -28,7 +28,17 @@ export async function activate(context: vscode.ExtensionContext) {
   let refreshCommandList = vscode.commands.registerCommand(
     "command-store.refreshCommandList",
     async () => {
-      await storageExplorer.getCommmand();
+      const currentDocument = vscode.window.activeTextEditor?.document;
+      const saveLocation = vscode.workspace
+        .getConfiguration()
+        .get<string>("commandStore.configSavingLocation");
+      if (saveLocation === "workspace" && !currentDocument?.uri) {
+        vscode.window.showErrorMessage(
+          "Open a file inside your project folder."
+        );
+      } else {
+        await storageExplorer.getCommmand();
+      }
     }
   );
 
