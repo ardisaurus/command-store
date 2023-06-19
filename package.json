@@ -58,6 +58,14 @@
         }
       },
       {
+        "command": "command-store.refreshCommandList",
+        "title": "Refresh command list",
+        "icon": {
+          "light": "resources/light/refresh.svg",
+          "dark": "resources/dark/refresh.svg"
+        }
+      },
+      {
         "command": "command-store.addCommandItem",
         "title": "Add command item",
         "icon": {
@@ -76,6 +84,11 @@
     },
     "menus": {
       "view/title": [
+        {
+          "command": "command-store.refreshCommandList",
+          "group": "navigation",
+          "when": "view == commandStoreTreeView"
+        },
         {
           "command": "command-store.addCommandItem",
           "group": "navigation",

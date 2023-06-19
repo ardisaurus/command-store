@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 
 import { TreeView } from "./treeView";
+import { storageExplorer } from "./storage";
 
 export async function activate(context: vscode.ExtensionContext) {
   const treeView = new TreeView(context);
@@ -24,7 +25,15 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  let refreshCommandList = vscode.commands.registerCommand(
+    "command-store.refreshCommandList",
+    async () => {
+      await storageExplorer.getCommmand();
+    }
+  );
+
   context.subscriptions.push(addCommand);
+  context.subscriptions.push(refreshCommandList);
 }
 
 export function deactivate() {}
