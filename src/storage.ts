@@ -63,6 +63,7 @@ class StorageClass {
       commands = this.commandList.db.get("commands").value() || [];
     } else {
       const currentDocument = vscode.window.activeTextEditor?.document;
+      // check if currently open/view a file inside project folder and save setting to workspace
       if (this.saveLocation === "workspace" && !currentDocument?.uri) {
         commands = [];
       } else {
@@ -74,6 +75,7 @@ class StorageClass {
   }
 
   async setCommmand(value: Command[]) {
+    // return true if no error
     try {
       if (this.saveLocation === "root") {
         this.commandList.db.set("commands", value).write();
@@ -82,6 +84,7 @@ class StorageClass {
         const mConfiguration = this.getmConfig();
         if (this.saveLocation === "workspace") {
           const currentDocument = vscode.window.activeTextEditor?.document;
+          // check if currently open/view a file inside project folder
           if (currentDocument?.uri) {
             await mConfiguration.update(
               "commandStore.list",

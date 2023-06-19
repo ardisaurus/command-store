@@ -71,6 +71,7 @@ class StorageClass {
             }
             else {
                 const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
+                // check if currently open/view a file inside project folder and save setting to workspace
                 if (this.saveLocation === "workspace" && !(currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri)) {
                     commands = [];
                 }
@@ -85,6 +86,7 @@ class StorageClass {
     setCommmand(value) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
+            // return true if no error
             try {
                 if (this.saveLocation === "root") {
                     this.commandList.db.set("commands", value).write();
@@ -94,6 +96,7 @@ class StorageClass {
                     const mConfiguration = this.getmConfig();
                     if (this.saveLocation === "workspace") {
                         const currentDocument = (_a = vscode.window.activeTextEditor) === null || _a === void 0 ? void 0 : _a.document;
+                        // check if currently open/view a file inside project folder
                         if (currentDocument === null || currentDocument === void 0 ? void 0 : currentDocument.uri) {
                             yield mConfiguration.update("commandStore.list", value, vscode.ConfigurationTarget.Workspace);
                             return true;
